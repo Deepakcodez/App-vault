@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(
       {
-        message: "user created",
+        message: "developer created",
         success: true,
       },
       { status: 200 }

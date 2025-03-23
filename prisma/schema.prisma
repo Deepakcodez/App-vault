@@ -36,12 +36,12 @@ model Project {
   project_images        String[]
   project_repo          String?
   project_link          String
-  project_tutorial_link String
+  project_tutorial_link String?
   comments              String[]
-  Project_views         BigInt    @default(0)
-  project_rating        Int       @default(0)
+  Project_views         BigInt?    @default(0)
+  project_rating        Int?       @default(0)
   project_developer     Developer @relation(fields: [project_developer_id], references: [dev_id])
   project_developer_id  String
   createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  updatedAt             DateTime?  @updatedAt
 }
