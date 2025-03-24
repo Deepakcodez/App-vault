@@ -16,14 +16,14 @@ datasource db {
 model Developer {
   dev_id       String    @id @unique @default(uuid())
   dev_name     String
-  dev_email    String
-  dev_password String 
-  dev_phone    String
-  dev_resume   String
-  dev_avatar   String
+  dev_email    String    @unique
+  dev_password String?
+  dev_phone    String?
+  dev_resume   String?
+  dev_avatar   String?
   dev_projects Project[]
   createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  updatedAt    DateTime? @updatedAt
 }
 
 model Project {
@@ -38,10 +38,10 @@ model Project {
   project_link          String
   project_tutorial_link String?
   comments              String[]
-  Project_views         BigInt?    @default(0)
-  project_rating        Int?       @default(0)
+  Project_views         BigInt?   @default(0)
+  project_rating        Int?      @default(0)
   project_developer     Developer @relation(fields: [project_developer_id], references: [dev_id])
   project_developer_id  String
   createdAt             DateTime  @default(now())
-  updatedAt             DateTime?  @updatedAt
+  updatedAt             DateTime? @updatedAt
 }

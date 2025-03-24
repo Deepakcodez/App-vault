@@ -1,10 +1,17 @@
 "use client";
+import React from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import PaddingWrapper from "../../wrappers/PaddingWrapper";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Hero() {
+
+  const session = useSession();
+  React.useEffect(()=>{
+    console.log(session)
+  },[session])
   return (
     <PaddingWrapper className=" md:flex  overflow-hidden h-screen 2xl:h-[50rem] ">
       <div className="mx-auto flex flex-col w-full justify-center  ">
