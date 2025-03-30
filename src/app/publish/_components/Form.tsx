@@ -3,6 +3,7 @@ import Input from "@/app/_components/ui/common/Input";
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
 import { z } from "zod";
+import ImageUploader from "./ImageUploader";
 
 // Define the form data type
 type FormDataType = {
@@ -37,11 +38,17 @@ const Form: React.FC = () => {
     tutorial: "",
   });
 
-  const [validationErrors, setValidationErrors] = React.useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = React.useState<
+    Record<string, string>
+  >({});
 
   // Track which inputs are editable
-  const [editableIndices, setEditableIndices] = React.useState<Set<number>>(new Set([0]));
-  const [featEditableIndices, setFeatEditableIndices] = React.useState<Set<number>>(new Set([0]));
+  const [editableIndices, setEditableIndices] = React.useState<Set<number>>(
+    new Set([0])
+  );
+  const [featEditableIndices, setFeatEditableIndices] = React.useState<
+    Set<number>
+  >(new Set([0]));
 
   // Refs to manage focus
   const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
@@ -57,7 +64,9 @@ const Form: React.FC = () => {
   const handleFeatureChange = (i: number, value: string) => {
     setFormData((prev) => ({
       ...prev,
-      features: prev.features.map((feat, index) => (index === i ? value : feat)),
+      features: prev.features.map((feat, index) =>
+        index === i ? value : feat
+      ),
     }));
   };
 
@@ -188,6 +197,10 @@ const Form: React.FC = () => {
           label="App Description"
           error={validationErrors.description}
         />
+        <div>
+          <h1 className="pb-1">Project Sample Images</h1>
+          <ImageUploader/>
+        </div>
         <div>
           <p>Tech Stack</p>
           <div className=" flex flex-wrap gap-4">

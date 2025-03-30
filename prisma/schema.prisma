@@ -26,6 +26,8 @@ model Developer {
   updatedAt    DateTime? @updatedAt
 }
 
+
+
 model Project {
   project_id            String    @id @unique @default(uuid())
   project_name          String
@@ -33,7 +35,7 @@ model Project {
   tech_stack            String[]
   project_icon          String
   project_features      String[]
-  project_images        String[]
+  project_images        ProjImage[]
   project_repo          String?
   project_link          String
   project_tutorial_link String?
@@ -44,4 +46,14 @@ model Project {
   project_developer_id  String
   createdAt             DateTime  @default(now())
   updatedAt             DateTime? @updatedAt
+}
+
+
+model ProjImage {
+  id          String   @id @default(uuid())
+  url         String
+  public_id   String   
+  project     Project? @relation(fields: [projectId], references: [project_id])
+  projectId   String?
+  createdAt   DateTime @default(now())
 }

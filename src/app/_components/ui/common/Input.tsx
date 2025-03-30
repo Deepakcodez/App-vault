@@ -28,14 +28,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <div className="flex flex-col ">
-        <label htmlFor={label}>{label}</label>
+      <div className="flex  flex-col ">
+        <label htmlFor={label} className="pb-1" >{label}</label>
         <input
           ref={ref}
           type="text"
           value={value}
           onChange={onChange}
-          onKeyUp={onKeyPress}
+          onKeyDown={onKeyPress}
           placeholder={placeholder}
           className={cn(
             "focus:outline-none bg-neutral-700  px-2 py-2",
