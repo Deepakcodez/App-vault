@@ -38,7 +38,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           onKeyDown={onKeyPress}
           placeholder={placeholder}
           className={cn(
-            "focus:outline-none bg-neutral-700  px-2 py-2",
+            "focus:outline-none bg-neutral-900  px-2 py-2",
             className
           )}
           readOnly={readOnly}

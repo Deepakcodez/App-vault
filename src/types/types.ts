@@ -31,7 +31,27 @@ type Developer = {
     updatedAt?: Date;
   };
 
+
+  type ImageType = {
+    name: string;
+    url: string;
+  };
+
+
+  type FormData = {
+    appName: string;
+    description: string;
+    images : ImageType[];
+    stack: string[];
+    features: string[];
+    repo: string;
+    link: string;
+    tutorial: string;
+  };
+
   export type {
     Developer,
-    Project
+    Project,
+    ImageType,
+    FormData
   }

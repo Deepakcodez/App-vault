@@ -2,41 +2,14 @@
 import Input from "@/app/_components/ui/common/Input";
 import React from "react";
 import { RxCross2 } from "react-icons/rx";
-import { z } from "zod";
 import ImageUploader from "./ImageUploader";
+import { useFormContext } from "../FormContext";
+import { formSchema } from "../utils/FormSchema";
+import { z } from "zod";
 
-// Define the form data type
-type FormDataType = {
-  appName: string;
-  description: string;
-  stack: string[];
-  features: string[];
-  repo: string;
-  link: string;
-  tutorial: string;
-};
-
-// Define the Zod schema for validation
-const formSchema = z.object({
-  appName: z.string().min(1, "App Name is required"),
-  description: z.string().min(1, "Description is required"),
-  stack: z.array(z.string().min(1, "Tech stack item cannot be empty")),
-  features: z.array(z.string().min(1, "Feature cannot be empty")),
-  repo: z.string().url("Invalid repository URL").optional(),
-  link: z.string().url("Invalid project link"),
-  tutorial: z.string().url("Invalid tutorial URL").optional(),
-});
 
 const Form: React.FC = () => {
-  const [formData, setFormData] = React.useState<FormDataType>({
-    appName: "",
-    description: "",
-    stack: [""],
-    features: [""],
-    repo: "",
-    link: "",
-    tutorial: "",
-  });
+  const { formData, setFormData } = useFormContext();
 
   const [validationErrors, setValidationErrors] = React.useState<
     Record<string, string>
@@ -169,7 +142,7 @@ const Form: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="md:text-6xl text-4xl font-bold text-center bg-gradient-to-b from-neutral-600 to-transparent text-transparent bg-clip-text">
+      <h1 className="md:text-6xl text-4xl font-bold text-center  bg-clip-text">
         Register Your App
       </h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -199,7 +172,7 @@ const Form: React.FC = () => {
         />
         <div>
           <h1 className="pb-1">Project Sample Images</h1>
-          <ImageUploader/>
+          <ImageUploader />
         </div>
         <div>
           <p>Tech Stack</p>
