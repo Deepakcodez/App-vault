@@ -6,6 +6,7 @@ import ImageUploader from "./ImageUploader";
 import { useFormContext } from "../FormContext";
 import { formSchema } from "../utils/FormSchema";
 import { z } from "zod";
+import axios from "axios";
 
 
 const Form: React.FC = () => {
@@ -103,12 +104,15 @@ const Form: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       // Validate the form data using Zod
-      formSchema.parse(formData);
+      formSchema.parse(formData)
+
+      const resp = await axios.post('/api/project',{formData})
+      console.log(resp)
       setValidationErrors({}); // Clear validation errors
       console.log("Form submitted successfully", formData);
       // Add your form submission logic here
@@ -141,7 +145,7 @@ const Form: React.FC = () => {
   }, [formData.features.length]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-24">
       <h1 className="md:text-6xl text-4xl font-bold text-center  bg-clip-text">
         Register Your App
       </h1>
@@ -280,7 +284,10 @@ const Form: React.FC = () => {
           label="Tutorial link"
           error={validationErrors.tutorial}
         />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        <button 
+        onClick={handleSubmit}
+        type="submit"
+         className="bg-blue-500 text-white p-2 rounded">
           Submit
         </button>
       </form>
