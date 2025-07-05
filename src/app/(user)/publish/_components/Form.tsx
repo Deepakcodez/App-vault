@@ -106,15 +106,40 @@ const Form: React.FC = () => {
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+    
+    try { 
+      formSchema.parse(formData);
+      
+      // Create FormData object
+      const formDataToSend = new FormData();
+      
+      // Append all non-file fields
+      formDataToSend.append("appName", formData.appName);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("stack", JSON.stringify(formData.stack));
+      formDataToSend.append("features", JSON.stringify(formData.features));
+      formDataToSend.append("repo", formData.repo || "");
+      formDataToSend.append("link", formData.link);
+      formDataToSend.append("tutorial", formData.tutorial || "");
+      
+      // Append all image files
+      formData.images.forEach((img) => {
+        if (img.file instanceof File) {
+          formDataToSend.append("images", img.file);
+        }
+      });
+      
+      console.log("om fdjkgh fhdafk kjfh ");
+    // Send with proper headers for multipart/form-data
+    const resp = await axios.post('/api/project', formDataToSend, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
 
-    try {
-      // Validate the form data using Zod
-      formSchema.parse(formData)
-
-      const resp = await axios.post('/api/project',{formData})
-      console.log(resp)
-      setValidationErrors({}); // Clear validation errors
-      console.log("Form submitted successfully", formData);
+    console.log(resp);
+    setValidationErrors({});
+    console.log("Form submitted successfully");
       // Add your form submission logic here
     } catch (error) {
       if (error instanceof z.ZodError) {

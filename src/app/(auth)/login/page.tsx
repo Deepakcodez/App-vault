@@ -1,5 +1,4 @@
 "use client";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
@@ -11,27 +10,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
 
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError(result.error);
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (err) {
-      console.log(err);
-      setError("An unexpected error occurred");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -49,7 +28,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={()=>{}}>
             <div>
               <label
                 htmlFor="email"
@@ -143,7 +122,7 @@ export default function LoginPage() {
             <div className="mt-6 grid grid-cols-2 gap-3">
               <div>
                 <button
-                  onClick={() => signIn("google")}
+                  // onClick={() => signIn("google")}
                   className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   <FcGoogle className="h-5 w-5" />
@@ -153,7 +132,7 @@ export default function LoginPage() {
 
               <div>
                 <button
-                  onClick={() => signIn("github")}
+                  // onClick={() => signIn("github")}
                   className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
                   <FaGithub className="h-5 w-5" />

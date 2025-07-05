@@ -1,72 +1,50 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
-import { Readable } from "stream";
+import { getServerSession } from "next-auth";
+import { NEXT_AUTH } from "@/libs/auth";
+import { UploadMultiImage } from "../utils/ImageUploader";
 
 const prisma = new PrismaClient();
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
-});
-
 export async function POST(req: Request) {
   try {
-    const { formData } = await req.json();
-    const { appName, description, images, stack, features, repo, link, tutorial } = formData;
-
-    // Type for Cloudinary upload result
-    interface CloudinaryResult {
-      secure_url: string;
-      public_id: string;
+    const Auth = await getServerSession(NEXT_AUTH);
+    if (!Auth?.user?.id) {
+      return NextResponse.json(
+        { message: "Unauthorized", success: false },
+        { status: 401 }
+      );
     }
 
+    const formData = await req.formData();
+    
+    // Extract all form fields
+    const appName = formData.get("appName") as string;
+    const description = formData.get("description") as string;
+    const stack = formData.get("stack") as string;
+    const features = formData.get("features") as string;
+    const repo = formData.get("repo") as string;
+    const link = formData.get("link") as string;
+    const tutorial = formData.get("tutorial") as string;
+    
+    // Get all image files
+    const imageFiles = formData.getAll("images") as File[];
+
     // Upload images to Cloudinary
-    const uploadedImages: CloudinaryResult[] = await Promise.all(
-      images.map(async (image: { url: string }) => {
-        const response = await fetch(image.url);
-        const arrayBuffer = await response.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-        
-        // Convert to Readable stream
-        const readableStream = new Readable();
-        readableStream.push(buffer);
-        readableStream.push(null); // Signals end of stream
+    const uploadedImages = await UploadMultiImage(imageFiles);
 
-        const result = await new Promise<CloudinaryResult>((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: "project_images" },
-            (error, result) => {
-              if (error) reject(error);
-              else resolve(result as CloudinaryResult);
-            }
-          );
-          
-          readableStream.pipe(uploadStream);
-        });
-
-        return {
-          url: result.secure_url,
-          public_id: result.public_id
-        };
-      })
-    );
-
-    // Create project in database
+    // Create project with image references
     const project = await prisma.project.create({
       data: {
         project_name: appName,
         project_description: description,
-        tech_stack: stack,
-        project_features: features,
+        tech_stack: stack ? JSON.parse(stack) : [], // Parse stringified array
+        project_icon: "ff", // Replace with actual icon logic
+        project_features: features ? JSON.parse(features) : [], // Parse stringified array
         project_repo: repo,
         project_link: link,
         project_tutorial_link: tutorial,
-        project_developer: {
-          connect: { dev_id: "developer_id_here" } // Replace with actual developer ID
-        },
+        project_developer_id: Auth.user.id,
         project_images: {
           create: uploadedImages.map(img => ({
             url: img.url,
@@ -79,21 +57,19 @@ export async function POST(req: Request) {
       }
     });
 
-    return NextResponse.json(
-      {
-        message: "Project created successfully",
-        success: true,
-        project
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      message: "Project created successfully",
+      success: true,
+      project
+    });
+
   } catch (error: any) {
-    console.error(error);
+    console.error("API Error:", error);
     return NextResponse.json(
       {
         message: "Internal server error",
         success: false,
-        error: error.message
+        error: error.message,
       },
       { status: 500 }
     );

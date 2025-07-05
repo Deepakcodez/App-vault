@@ -1,16 +1,7 @@
 "use client"
-import { FormData } from '@/types/types';
+import { FormContextType, FormData } from '@/types/types';
 import React, { createContext, useContext, useState } from 'react';
 
-
-
-
-
-export type FormContextType = {
-  formData: FormData;
-  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  resetForm: () => void;
-};
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
