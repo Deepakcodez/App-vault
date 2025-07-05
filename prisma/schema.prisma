@@ -1,11 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
+  output   = "../src/lib/generated/prisma"
 }
 
 datasource db {
@@ -13,110 +8,99 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Project {
+  id            String    @id @unique @default(uuid())
+  name          String
+  description   String
+  tech_stack    String[]
+  icon          String
+  features      String
+  // images        ProjImage[]
+  repo          String?
+  link          String
+  tutorial_link String?
+  comments      String[]
+  views         Int?      @default(0)
+  rating        Int?      @default(0)
+  developer     User      @relation(fields: [developer_id], references: [id])
+  developer_id  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
+}
+
+// model ProjImage {
+//   id        String   @id @default(uuid())
+//   url       String
+//   public_id String
+//   project   Project? @relation(fields: [projectId], references: [id])
+//   projectId String?
+//   createdAt DateTime @default(now())
+// }
+
+enum UserRole {
+  ADMIN
+  USER
+}
 
 model User {
-  id               String    @id @default(cuid())
-  name             String
-  email            String
-  emailVerified    Boolean   @default(false)
-  image            String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  twoFactorEnabled Boolean   @default(false)
-  Session          Session[]
-  Account          Account[]
+  id            String    @id @unique @default(cuid())
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  resume        String?
+  role          UserRole @default(USER)
+  projects      Project[]
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
 
   @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id        String   @id @default(cuid())
+  id        String   @id @unique @default(cuid())
   expiresAt DateTime
-  token     String   @unique
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
   ipAddress String?
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
+  @@unique([token])
   @@map("session")
 }
 
 model Account {
-  id           String    @id @default(cuid())
-  accountId    String
-  providerId   String
-  userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken  String?
-  refreshToken String?
-  idToken      String?
-  expiresAt    DateTime?
-  password     String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
+  id                    String    @id @unique @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
   accessTokenExpiresAt  DateTime?
   refreshTokenExpiresAt DateTime?
   scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
   @@map("account")
 }
 
 model Verification {
-  id         String    @id @default(cuid())
+  id         String    @id @unique @default(cuid())
   identifier String
   value      String
   expiresAt  DateTime
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
+  createdAt  DateTime?
+  updatedAt  DateTime?
 
   @@map("verification")
-}
-
-model Developer {
-  dev_id       String    @id @unique @default(uuid())
-  dev_name     String
-  dev_email    String    @unique
-  dev_password String?
-  dev_phone    String?
-  dev_resume   String?
-  dev_avatar   String?
-  dev_projects Project[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime? @updatedAt
-}
-
-
-
-model Project {
-  project_id            String    @id @unique @default(uuid())
-  project_name          String
-  project_description   String
-  tech_stack            String[]
-  project_icon          String
-  project_features      String[]
-  project_images        ProjImage[]
-  project_repo          String?
-  project_link          String
-  project_tutorial_link String?
-  comments              String[]
-  Project_views         Int?   @default(0)
-  project_rating        Int?      @default(0)
-  project_developer     Developer @relation(fields: [project_developer_id], references: [dev_id])
-  project_developer_id  String
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime? @updatedAt
-}
-
-
-model ProjImage {
-  id          String   @id @default(uuid())
-  url         String
-  public_id   String   
-  project     Project? @relation(fields: [projectId], references: [project_id])
-  projectId   String?
-  createdAt   DateTime @default(now())
 }

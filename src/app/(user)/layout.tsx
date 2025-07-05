@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../_components/ui/common/navbar/Navbar";
 import Image from "next/image";
-import { grainyBg } from "@/libs/constants";
+import { grainyBg } from "../../lib/constants";
 
 export default function UserLayout({
   children,

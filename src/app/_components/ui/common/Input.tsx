@@ -1,4 +1,4 @@
-import { cn } from "@/libs/utils";
+import { cn } from "../../../../lib/utils";
 
 import React from "react";
 
@@ -29,7 +29,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     return (
       <div className="flex  flex-col ">
-        <label htmlFor={label} className="pb-1" >{label}</label>
+        <label htmlFor={label} className="pb-1">
+          {label}
+        </label>
         <input
           ref={ref}
           type="text"

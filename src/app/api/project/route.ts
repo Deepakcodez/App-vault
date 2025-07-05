@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { NEXT_AUTH } from "@/libs/auth";
+import { NEXT_AUTH } from "../../../../lib/auth";
 import { UploadMultiImage } from "../utils/ImageUploader";
 
 const prisma = new PrismaClient();
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     }
 
     const formData = await req.formData();
-    
+
     // Extract all form fields
     const appName = formData.get("appName") as string;
     const description = formData.get("description") as string;
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const repo = formData.get("repo") as string;
     const link = formData.get("link") as string;
     const tutorial = formData.get("tutorial") as string;
-    
+
     // Get all image files
     const imageFiles = formData.getAll("images") as File[];
 
@@ -46,23 +46,22 @@ export async function POST(req: Request) {
         project_tutorial_link: tutorial,
         project_developer_id: Auth.user.id,
         project_images: {
-          create: uploadedImages.map(img => ({
+          create: uploadedImages.map((img) => ({
             url: img.url,
-            public_id: img.public_id
-          }))
-        }
+            public_id: img.public_id,
+          })),
+        },
       },
       include: {
-        project_images: true
-      }
+        project_images: true,
+      },
     });
 
     return NextResponse.json({
       message: "Project created successfully",
       success: true,
-      project
+      project,
     });
-
   } catch (error: any) {
     console.error("API Error:", error);
     return NextResponse.json(

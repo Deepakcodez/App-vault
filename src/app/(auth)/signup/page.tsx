@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import { registerUserAction } from "@/lib/actiions/auth/auth";
 
 // Define validation schema with Zod
 const signUpSchema = z.object({
@@ -33,13 +34,15 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
   });
   const router = useRouter();
+  
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      const resp = await axios.post("/api/developer", { data });
-      console.log(resp);
-      if (resp.status === 200) {
-        router.push("/");
-      }
+      // const resp = await axios.post("/api/user", { data });
+      // console.log(resp);
+      // if (resp.status === 200) {
+      //   router.push("/");
+      // }
+      await registerUserAction(data)
       reset();
     } catch (error) {
       console.error("Signup error:", error);

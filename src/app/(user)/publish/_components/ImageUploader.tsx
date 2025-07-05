@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { RxCross2 } from "react-icons/rx";
 import { useFormContext } from "../FormContext";
-import { brokenImage } from "@/libs/constants";
+import { brokenImage } from "../../../../lib/constants";
 
 const MAX_IMAGES = 8;
 
@@ -20,7 +20,7 @@ const ImageUploader: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    
+
     const files = Array.from(e.target.files);
     if (formData.images.length + files.length > MAX_IMAGES) {
       alert(`You can only upload up to ${MAX_IMAGES} images`);
@@ -28,18 +28,19 @@ const ImageUploader: React.FC = () => {
     }
 
     const newImages: ImageData[] = files
-      .filter(file => file.type.startsWith("image/"))
-      .map(file =>{ 
-        console.log(file)
-        return({
-        file,
-        previewUrl: URL.createObjectURL(file),
-        name: file.name
-      })});
+      .filter((file) => file.type.startsWith("image/"))
+      .map((file) => {
+        console.log(file);
+        return {
+          file,
+          previewUrl: URL.createObjectURL(file),
+          name: file.name,
+        };
+      });
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...newImages]
+      images: [...prev.images, ...newImages],
     }));
   };
 
@@ -55,9 +56,9 @@ const ImageUploader: React.FC = () => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     if (!e.dataTransfer.files) return;
-    
+
     const files = Array.from(e.dataTransfer.files);
     if (formData.images.length + files.length > MAX_IMAGES) {
       alert(`You can only upload up to ${MAX_IMAGES} images`);
@@ -65,24 +66,24 @@ const ImageUploader: React.FC = () => {
     }
 
     const newImages: ImageData[] = files
-      .filter(file => file.type.startsWith("image/"))
-      .map(file => ({
+      .filter((file) => file.type.startsWith("image/"))
+      .map((file) => ({
         file,
         previewUrl: URL.createObjectURL(file),
-        name: file.name
+        name: file.name,
       }));
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: [...prev.images, ...newImages]
+      images: [...prev.images, ...newImages],
     }));
   };
 
   const removeImage = (index: number) => {
     URL.revokeObjectURL(formData.images[index].previewUrl);
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index)
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -93,9 +94,13 @@ const ImageUploader: React.FC = () => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`bg-neutral-600/40 rounded-3xl border-2 border-dashed h-[12rem] w-full flex flex-col justify-center items-center gap-12 ${
-          isDragging ? "border-blue-500 bg-neutral-500/60" : "border-neutral-500"
+          isDragging
+            ? "border-blue-500 bg-neutral-500/60"
+            : "border-neutral-500"
         } ${
-          formData.images.length >= MAX_IMAGES ? "opacity-70 cursor-not-allowed" : ""
+          formData.images.length >= MAX_IMAGES
+            ? "opacity-70 cursor-not-allowed"
+            : ""
         }`}
       >
         <div className="text-center">
@@ -107,12 +112,16 @@ const ImageUploader: React.FC = () => {
           </p>
         </div>
         <motion.div
-          whileTap={formData.images.length < MAX_IMAGES ? {
-            scale: 0.98,
-            backgroundColor: "#5e5e5e",
-            boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
-            transition: { duration: 0.1 },
-          } : undefined}
+          whileTap={
+            formData.images.length < MAX_IMAGES
+              ? {
+                  scale: 0.98,
+                  backgroundColor: "#5e5e5e",
+                  boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
+                  transition: { duration: 0.1 },
+                }
+              : undefined
+          }
           className="relative w-full py-2"
         >
           <p className="text-center">Choose file</p>
