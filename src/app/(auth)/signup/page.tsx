@@ -22,7 +22,7 @@ const signUpSchema = z.object({
     .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"),
 });
 
-type SignUpFormData = z.infer<typeof signUpSchema>;
+export type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpPage() {
   const {
@@ -34,15 +34,15 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
   });
   const router = useRouter();
-  
+
   const onSubmit = async (data: SignUpFormData) => {
     try {
       // const resp = await axios.post("/api/user", { data });
       // console.log(resp);
       // if (resp.status === 200) {
-      //   router.push("/");
       // }
-      await registerUserAction(data)
+     const resp =  await registerUserAction(data);
+     if(resp?.success) router.push("/");
       reset();
     } catch (error) {
       console.error("Signup error:", error);
@@ -226,7 +226,7 @@ export default function SignUpPage() {
                   className="w-full inline-flex justify-center py-2 px-4 border border-neutral-600 rounded-md shadow-sm bg-neutral-800 text-sm font-medium text-white hover:bg-neutral-700"
                 >
                   <span className="sr-only">Sign in with Google</span>
-                <FcGoogle size={25}/>
+                  <FcGoogle size={25} />
                 </button>
               </div>
 
@@ -236,7 +236,7 @@ export default function SignUpPage() {
                   className="w-full inline-flex justify-center py-2 px-4 border border-neutral-600 rounded-md shadow-sm bg-neutral-800 text-sm font-medium text-white hover:bg-neutral-700"
                 >
                   <span className="sr-only">Sign in with GitHub</span>
-                  <FaGithub size={25}/>
+                  <FaGithub size={25} />
                 </button>
               </div>
             </div>
