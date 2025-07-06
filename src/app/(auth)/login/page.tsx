@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
 import { loginUserAction } from "@/lib/actiions/auth/auth";
+import SocialLoginButtons from "@/app/_components/auth/SocialLoginButtons";
 
 export type loginCredentialT = {
   email: string;
@@ -15,8 +14,6 @@ export default function LoginPage() {
     password: "",
   });
 
-  const [error, setError] = useState("");
-  const router = useRouter();
 
   const SubmitForm = async (e) => {
     e.preventDefault();
@@ -38,11 +35,7 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && (
-            <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded">
-              {error}
-            </div>
-          )}
+          
 
           <form className="space-y-6">
             <div>
@@ -140,27 +133,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <div>
-                <button
-                  // onClick={() => signIn("google")}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  <FcGoogle className="h-5 w-5" />
-                  <span className="ml-2">Google</span>
-                </button>
-              </div>
-
-              <div>
-                <button
-                  // onClick={() => signIn("github")}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-                >
-                  <FaGithub className="h-5 w-5" />
-                  <span className="ml-2">GitHub</span>
-                </button>
-              </div>
-            </div>
+            <SocialLoginButtons />
           </div>
 
           <div className="mt-6 text-center">
