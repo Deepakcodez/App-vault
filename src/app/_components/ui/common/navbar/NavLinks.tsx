@@ -22,7 +22,7 @@ const NavLinks: React.FC = () => {
   }, [pathName]);
 
   return (
-    <div className="hidden lg:flex justify-between gap-2 text-center h-8 top-0">
+    <div className="hidden md:flex justify-between gap-2 text-center h-8 top-0">
       <div className="bg-gradient-to-t flex justify-between items-center text-md cursor-pointer px-2 duration-500 transition-all">
         {navlinks.map((link) => (
           <React.Fragment key={link.href}>

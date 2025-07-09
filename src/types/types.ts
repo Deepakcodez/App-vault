@@ -60,4 +60,9 @@ type CloudinaryResult = {
   resetForm: () => void;
 };
 
-export type { Developer, Project, ImageType, FormData, CloudinaryResult, FormContextType };
+
+type AvatarType = {
+  avatar : string;
+}
+
+export type { Developer, Project, ImageType, FormData, CloudinaryResult, FormContextType, AvatarType };

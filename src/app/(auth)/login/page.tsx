@@ -1,9 +1,7 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { loginUserAction } from "@/lib/actiions/auth/auth";
 import SocialLoginButtons from "@/app/_components/auth/SocialLoginButtons";
-
 export type loginCredentialT = {
   email: string;
   password: string;
@@ -13,9 +11,10 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+ 
+  
 
-
-  const SubmitForm = async (e) => {
+  const SubmitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!loginCred.email || !loginCred.password) return;
     const resp = await loginUserAction(loginCred);
@@ -29,7 +28,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
+          Sign in to your account 
         </h2>
       </div>
 
