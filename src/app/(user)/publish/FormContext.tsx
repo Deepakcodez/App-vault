@@ -1,11 +1,27 @@
 "use client"
-import { FormContextType, FormData } from '@/types/types';
+// import { FormContextType, FormData } from '@/types/types';   its not available
 import React, { createContext, useContext, useState } from 'react';
 
+type FormData = {
+  appName: string;
+  description: string;
+  images: string[];
+  stack: string[];
+  features: string[];
+  repo: string;
+  link: string;
+  tutorial: string;
+};
+
+type FormContextType = {
+  formData: FormData;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  resetForm: () => void;
+};
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
-const initialFormData: FormData = {
+const initialFormData = {
   appName: "",
   description: "",
   images:[],
