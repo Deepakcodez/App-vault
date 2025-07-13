@@ -1,11 +1,14 @@
 "use client"
 // import { FormContextType, FormData } from '@/types/types';   its not available
 import React, { createContext, useContext, useState } from 'react';
-
+type FormImage = {
+  url: string;
+  file?: File;
+};
 type FormData = {
   appName: string;
   description: string;
-  images: string[];
+  images: FormImage[];
   stack: string[];
   features: string[];
   repo: string;

@@ -8,7 +8,10 @@ import { formSchema } from "../utils/FormSchema";
 import { z } from "zod";
 import axios from "axios";
 
-
+type FormImage = {
+  url: string;
+  file?: File; // Make file optional since it might not always be present
+};
 const Form: React.FC = () => {
   const { formData, setFormData } = useFormContext();
 
@@ -122,8 +125,8 @@ const Form: React.FC = () => {
       formDataToSend.append("link", formData.link);
       formDataToSend.append("tutorial", formData.tutorial || "");
       
-      // Append all image files
-      formData.images.forEach((img) => {
+      // Append all image files - with proper type checking
+      (formData.images as FormImage[]).forEach((img) => {
         if (img.file instanceof File) {
           formDataToSend.append("images", img.file);
         }
@@ -143,16 +146,19 @@ const Form: React.FC = () => {
       // Add your form submission logic here
     } catch (error) {
       if (error instanceof z.ZodError) {
-        // Convert Zod errors to a validation error object
+        // Type-safe error handling
         const errors: Record<string, string> = {};
-        error.errors.forEach((err) => {
-          if (err.path) {
-            errors[err.path.join(".")] = err.message;
+        error.issues.forEach((issue) => {
+          if (issue.path) {
+            errors[issue.path.join(".")] = issue.message;
           }
         });
         setValidationErrors(errors);
+      } else {
+        console.error("Submission error:", error);
       }
     }
+  
   };
 
   React.useEffect(() => {
