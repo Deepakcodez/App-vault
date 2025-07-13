@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
-import { loginUserAction } from "@/lib/actiions/auth/auth";
 import SocialLoginButtons from "@/app/_components/auth/SocialLoginButtons";
+import { signIn } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 export type loginCredentialT = {
   email: string;
   password: string;
@@ -11,31 +13,34 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
- 
-  
-
+ const router = useRouter();
   const SubmitForm = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (!loginCred.email || !loginCred.password) return;
-    const resp = await loginUserAction(loginCred);
-    if (resp.success) {
-      console.log(resp);
-      alert("user logined ");
-    }
+    await signIn.email(loginCred, {
+      onRequest: () => {
+        toast("Processing...");
+      },
+      onSuccess: () => {
+        toast.success("Welecome to the Developer Account");
+        router.push("/")
+      },
+      onError: (ctx) => {
+        toast.error(ctx.error.message || "Something Went Wrong");
+      },
+    });
   };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account 
+          Sign in to your account
         </h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          
-
           <form className="space-y-6">
             <div>
               <label

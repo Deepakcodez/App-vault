@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-import { registerUserAction } from "@/lib/actiions/auth/auth";
+import { signUp } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 // Define validation schema with Zod
 const signUpSchema = z.object({
@@ -36,13 +37,19 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      // const resp = await axios.post("/api/user", { data });
-      // console.log(resp);
-      // if (resp.status === 200) {
-      // }
-     const resp =  await registerUserAction(data);
-     if(resp?.success) router.push("/");
-      reset();
+      await signUp.email(data, {
+        onRequest: () => {
+          toast("Processing");
+        },
+        onSuccess: () => {
+          toast.success("Developer Account Created");
+          reset();
+          router.push("/");
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message || "Something Went Wrong");
+        },
+      });
     } catch (error) {
       console.error("Signup error:", error);
     }

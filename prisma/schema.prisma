@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/lib/generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -9,59 +9,60 @@ datasource db {
 }
 
 model Project {
-  id            String    @id @unique @default(uuid())
-  name          String
-  description   String
-  tech_stack    String[]
-  icon          String
-  features      String
-  // images        ProjImage[]
-  repo          String?
-  link          String
-  tutorial_link String?
-  comments      String[]
-  views         Int?      @default(0)
-  rating        Int?      @default(0)
-  developer     User      @relation(fields: [developer_id], references: [id])
-  developer_id  String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime? @updatedAt
+  id           String      @id @default(uuid())
+  name         String
+  description  String
+  techStack    String[]    @map("tech_stack") // Better camelCase in model, snake_case in DB
+  icon         String
+  features     String
+  images       ProjImage[] // Renamed for clarity (avoid PascalCase for relations)
+  repo         String?
+  link         String
+  tutorialLink String?     @map("tutorial_link")
+  comments     String[]
+  views        Int         @default(0) // Removed nullable as default is 0
+  rating       Int         @default(0) // Removed nullable as default is 0
+  developer    User        @relation(fields: [developerId], references: [id])
+  developerId  String // camelCase for field names
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt // Shouldn't be nullable
+
+  @@index([developerId]) // Add index for better query performance
+  @@map("projects") // Plural table name convention
 }
 
-// model ProjImage {
-//   id        String   @id @default(uuid())
-//   url       String
-//   public_id String
-//   project   Project? @relation(fields: [projectId], references: [id])
-//   projectId String?
-//   createdAt DateTime @default(now())
-// }
+model ProjImage {
+  id        String   @id @default(uuid())
+  url       String
+  publicId  String   @map("public_id")
+  project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
+  createdAt DateTime @default(now())
 
-enum UserRole {
-  ADMIN
-  USER
+  @@map("project_images")
 }
 
 model User {
-  id            String    @id @unique @default(cuid())
+  id            String    @id
   name          String
   email         String
+  phone         Int?
   emailVerified Boolean
   image         String?
+  role          String?
   resume        String?
-  role          UserRole @default(USER)
-  projects      Project[]
-  createdAt     DateTime
-  updatedAt     DateTime
   sessions      Session[]
   accounts      Account[]
+  createdAt     DateTime
+  updatedAt     DateTime
+  projects      Project[]
 
   @@unique([email])
-  @@map("user")
+  @@map("users")
 }
 
 model Session {
-  id        String   @id @unique @default(cuid())
+  id        String   @id
   expiresAt DateTime
   token     String
   createdAt DateTime
@@ -76,7 +77,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id @unique @default(cuid())
+  id                    String    @id
   accountId             String
   providerId            String
   userId                String
@@ -95,7 +96,7 @@ model Account {
 }
 
 model Verification {
-  id         String    @id @unique @default(cuid())
+  id         String    @id
   identifier String
   value      String
   expiresAt  DateTime
