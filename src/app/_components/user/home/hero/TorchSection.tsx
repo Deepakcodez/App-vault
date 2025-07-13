@@ -8,8 +8,9 @@ const Torch: React.FC = () => {
   const y1 = useMotionValue(0);
 
   const [x, setx] = React.useState(0);
-  const [y, sety] = React.useState(0);
-
+  const [y, sety] = React.useState(0); 
+  console.log(x,y);
+  
   const handleMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setx(e.clientX);
     sety(e.clientY);
