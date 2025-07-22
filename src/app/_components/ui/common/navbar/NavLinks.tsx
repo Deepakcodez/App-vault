@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 interface NavLink {
   href: string;
@@ -17,9 +17,6 @@ const navlinks: NavLink[] = [
 const NavLinks: React.FC = () => {
   const pathName = usePathname();
 
-  useEffect(() => {
-    console.log(pathName === "/publish");
-  }, [pathName]);
 
   return (
     <div className="hidden md:flex justify-between gap-2 text-center h-8 top-0">

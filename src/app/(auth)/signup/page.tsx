@@ -47,6 +47,7 @@ export default function SignUpPage() {
           router.push("/");
         },
         onError: (ctx) => {
+          console.log(ctx)
           toast.error(ctx.error.message || "Something Went Wrong");
         },
       });
