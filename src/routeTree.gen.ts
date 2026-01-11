@@ -9,8 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserRouteRouteImport } from './routes/_user/route'
+import { Route as UserIndexRouteImport } from './routes/_user/index'
 import { Route as ApiSplatRouteImport } from './routes/api/$'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AuthSignInRouteImport } from './routes/_auth/sign-in'
+import { Route as UserProfileRouteRouteImport } from './routes/_user/profile/route'
+import { Route as UserProfileIndexRouteImport } from './routes/_user/profile/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
@@ -19,15 +24,39 @@ import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
-const IndexRoute = IndexRouteImport.update({
+const UserRouteRoute = UserRouteRouteImport.update({
+  id: '/_user',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserIndexRoute = UserIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => UserRouteRoute,
 } as any)
 const ApiSplatRoute = ApiSplatRouteImport.update({
   id: '/api/$',
   path: '/api/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin/dashboard',
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSignInRoute = AuthSignInRouteImport.update({
+  id: '/_auth/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserProfileRouteRoute = UserProfileRouteRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => UserRouteRoute,
+} as any)
+const UserProfileIndexRoute = UserProfileIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserProfileRouteRoute,
 } as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
@@ -66,22 +95,29 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/profile': typeof UserProfileRouteRouteWithChildren
+  '/sign-in': typeof AuthSignInRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/api/$': typeof ApiSplatRoute
+  '/': typeof UserIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/profile/': typeof UserProfileIndexRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/sign-in': typeof AuthSignInRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/api/$': typeof ApiSplatRoute
+  '/': typeof UserIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/profile': typeof UserProfileIndexRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -89,11 +125,16 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_user': typeof UserRouteRouteWithChildren
+  '/_user/profile': typeof UserProfileRouteRouteWithChildren
+  '/_auth/sign-in': typeof AuthSignInRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
   '/api/$': typeof ApiSplatRoute
+  '/_user/': typeof UserIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/_user/profile/': typeof UserProfileIndexRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -102,33 +143,45 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
+    | '/profile'
+    | '/sign-in'
+    | '/admin/dashboard'
     | '/api/$'
+    | '/'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/profile/'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
+    | '/sign-in'
+    | '/admin/dashboard'
     | '/api/$'
+    | '/'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/profile'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
     | '/demo/start/ssr'
   id:
     | '__root__'
-    | '/'
+    | '/_user'
+    | '/_user/profile'
+    | '/_auth/sign-in'
+    | '/admin/dashboard'
     | '/api/$'
+    | '/_user/'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
+    | '/_user/profile/'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -136,7 +189,9 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  UserRouteRoute: typeof UserRouteRouteWithChildren
+  AuthSignInRoute: typeof AuthSignInRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
   ApiSplatRoute: typeof ApiSplatRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -149,12 +204,19 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_user/': {
+      id: '/_user/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserIndexRouteImport
+      parentRoute: typeof UserRouteRoute
     }
     '/api/$': {
       id: '/api/$'
@@ -162,6 +224,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/$'
       preLoaderRoute: typeof ApiSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/sign-in': {
+      id: '/_auth/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof AuthSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_user/profile': {
+      id: '/_user/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof UserProfileRouteRouteImport
+      parentRoute: typeof UserRouteRoute
+    }
+    '/_user/profile/': {
+      id: '/_user/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof UserProfileIndexRouteImport
+      parentRoute: typeof UserProfileRouteRoute
     }
     '/demo/start/server-funcs': {
       id: '/demo/start/server-funcs'
@@ -215,8 +305,35 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface UserProfileRouteRouteChildren {
+  UserProfileIndexRoute: typeof UserProfileIndexRoute
+}
+
+const UserProfileRouteRouteChildren: UserProfileRouteRouteChildren = {
+  UserProfileIndexRoute: UserProfileIndexRoute,
+}
+
+const UserProfileRouteRouteWithChildren =
+  UserProfileRouteRoute._addFileChildren(UserProfileRouteRouteChildren)
+
+interface UserRouteRouteChildren {
+  UserProfileRouteRoute: typeof UserProfileRouteRouteWithChildren
+  UserIndexRoute: typeof UserIndexRoute
+}
+
+const UserRouteRouteChildren: UserRouteRouteChildren = {
+  UserProfileRouteRoute: UserProfileRouteRouteWithChildren,
+  UserIndexRoute: UserIndexRoute,
+}
+
+const UserRouteRouteWithChildren = UserRouteRoute._addFileChildren(
+  UserRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  UserRouteRoute: UserRouteRouteWithChildren,
+  AuthSignInRoute: AuthSignInRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
   ApiSplatRoute: ApiSplatRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
