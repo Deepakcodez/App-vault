@@ -1,5 +1,6 @@
 import { ProfileContent } from '@/components/profilecontent'
-import { getSessionFn } from '@/services/serverfn';
+import { getSessionFn } from '@/services/server/serverfn';
+import { betterAuthFullSession } from '@/types/auth';
 import { createFileRoute } from '@tanstack/react-router'
 import { Suspense, } from 'react'
 
@@ -7,7 +8,7 @@ export const Route = createFileRoute('/_user/profile/')({
   component: RouteComponent,
   loader: async () => {
     return {
-      unResolvedSession: getSessionFn() 
+      unResolvedSession: getSessionFn()
     }
   },
   errorComponent: ErrorComponent
@@ -15,11 +16,12 @@ export const Route = createFileRoute('/_user/profile/')({
 })
 
 function RouteComponent() {
-  const {unResolvedSession} = Route.useLoaderData() 
+  const { unResolvedSession } = Route.useLoaderData()
   return <div>
     <p>profile section</p>
     <Suspense fallback={<h1>loadinggg.......</h1>}>
-      <ProfileContent itemPromise={unResolvedSession} />
+      <ProfileContent
+        itemPromise={unResolvedSession as Promise<betterAuthFullSession>} />
     </Suspense>
   </div>
 }

@@ -1,7 +1,7 @@
 import { betterAuthFullSession } from "@/types/auth"
 import { use } from "react"
 
-export function ProfileContent({ itemPromise }: { itemPromise: Promise<betterAuthFullSession> }) {
+export function ProfileContent({ itemPromise }: { itemPromise: Promise<betterAuthFullSession > }) {
 
     const data = use(itemPromise)
     console.log(data)
