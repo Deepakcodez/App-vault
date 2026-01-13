@@ -1,16 +1,18 @@
-import { Button } from '@/components/ui/button'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Button } from '@/components/pages/ui/button'
+import { createFileRoute, Link, } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_user/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const navigate = useNavigate();
-  return <div>Hello "/_user/user   "
+  return <div>
+    <h1>Hero page</h1>
 
-    <Button onClick={() => navigate({ to: '/profile' })}>
-      Profile
-    </Button>
+    <Link to="/profile">
+      <Button>
+        Go to Profile
+      </Button>
+    </Link>
   </div>
 }

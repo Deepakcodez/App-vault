@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/pages/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/pages/ui/card"
 import { Github } from "lucide-react"
-import { FieldDescription } from "@/components/ui/field"
+import { FieldDescription } from "@/components/pages/ui/field"
 import { authClient } from "lib/auth-client"
 import { useState } from "react"
 
@@ -12,22 +12,22 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
   const signInWithGithub = async () => {
     console.log("clicked")
-      await authClient.signIn.social(
-        { provider: "github" },
-        {
-          onRequest: () => {
+    await authClient.signIn.social(
+      { provider: "github" },
+      {
+        onRequest: () => {
           setIsLoading(true)
-          },
-          onSuccess: () => {
-            console.log("Success!")
-            setIsLoading(false)
-          },
-          onError: (ctx) => {
-            console.log("error", ctx)
-            setIsLoading(false)
-          },
-        }
-      )
+        },
+        onSuccess: () => {
+          console.log("Success!")
+          setIsLoading(false)
+        },
+        onError: (ctx) => {
+          console.log("error", ctx)
+          setIsLoading(false)
+        },
+      }
+    )
   }
 
   return (
