@@ -8,10 +8,11 @@ export const Route = createFileRoute('/_user/profile/')({
   component: RouteComponent,
   loader: async () => {
     return {
-      unResolvedSession: getSessionFn()
+      unResolvedSession:  getSessionFn()
     }
   },
-  errorComponent: ErrorComponent
+  errorComponent: ErrorComponent,
+  
   // staleTime: 60_000,
 })
 
@@ -27,11 +28,11 @@ function RouteComponent() {
 }
 
 
-function ErrorComponent() {
+function ErrorComponent({ error }: { error: unknown }) {
   // You can customize this UI however you want
   return (
     <div style={{ padding: 20 }}>
-      <h1>No Session Found ❌</h1>
+      <h1>{error as string}</h1>
       <p>Please login to access your profile.</p>
     </div>
   )
