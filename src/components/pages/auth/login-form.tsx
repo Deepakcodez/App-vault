@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/pages/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/pages/ui/card"
 import { Github } from "lucide-react"
 import { FieldDescription } from "@/components/pages/ui/field"
 import { authClient } from "lib/auth-client"
 import { useState } from "react"
+import { cn } from "@/services/utils"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
 

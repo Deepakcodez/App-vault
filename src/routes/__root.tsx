@@ -4,6 +4,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { ReactLenis } from 'lenis/react'
 
 import appCss from '../styles.css?url'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -31,6 +32,10 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+
+  const queryClient = new QueryClient()
+
+
   return (
     <html lang="en">
       <head>
@@ -38,21 +43,21 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ReactLenis root>
-
-
-          {children}
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-            ]}
-          />
-          <Scripts />
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
+            <Scripts />
+          </QueryClientProvider>
         </ReactLenis>
       </body>
     </html>

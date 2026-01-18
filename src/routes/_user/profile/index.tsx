@@ -8,11 +8,11 @@ export const Route = createFileRoute('/_user/profile/')({
   component: RouteComponent,
   loader: async () => {
     return {
-      unResolvedSession:  getSessionFn()
+      unResolvedSession: getSessionFn()
     }
   },
   errorComponent: ErrorComponent,
-  
+
   // staleTime: 60_000,
 })
 

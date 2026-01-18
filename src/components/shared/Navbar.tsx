@@ -1,10 +1,10 @@
-import { Github, } from 'lucide-react'
-import { Button } from '../pages/ui/button'
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { cn } from '@/services/utils';
+
+import NavbarAuth from './NavbarAuth';
+import { Button } from "../pages/ui/button";
 
 export default function Navbar() {
 
@@ -62,6 +62,8 @@ export default function Navbar() {
         }
     };
 
+
+
     return (
         <div className='fixed top-0 w-full pt-6 flex justify-center '>
 
@@ -87,9 +89,12 @@ export default function Navbar() {
                         <h2 className='text-white text-xl font-black'>APPVAULT</h2>
                     </div>
                     <div className='flex-1 flex justify-end'>
-                        <Button className='bg-green-500'>
-                            Continue with <Github />
-                        </Button>
+                        <Suspense fallback={<Button
+                            className='bg-green-500'>
+                            Continue with GitHub
+                        </Button>}>
+                            <NavbarAuth />
+                        </Suspense>
                     </div>
                 </div>
             </div>
