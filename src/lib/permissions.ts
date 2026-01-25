@@ -5,7 +5,7 @@ export const statement = {
     project: ["create", "share", "update", "delete"],
 } as const;
 
-const ac = createAccessControl(statement);
+export const ac = createAccessControl(statement);
 
 export const user = ac.newRole({
     project: ["create"],
@@ -16,4 +16,3 @@ export const admin = ac.newRole({
     ...adminAc.statements,
 });
 
-    

@@ -14,7 +14,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
-    plugins: [
+    plugins: [  
         username(),
         adminPlugin({
             ac,
@@ -26,10 +26,10 @@ export const auth = betterAuth({
         lastLoginMethod({
             storeInDatabase: true,
         }),
-        captcha({
-            provider: "cloudflare-turnstile",
-            secretKey: process.env.TURNSTILE_SECRET_KEY!,
-        }),
+        // captcha({
+        //     provider: "cloudflare-turnstile",
+        //     secretKey: process.env.TURNSTILE_SECRET_KEY!,
+        // }),
     ],
     socialProviders: {
         github: {

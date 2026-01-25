@@ -1,8 +1,10 @@
+"use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Activity, Suspense, useRef, useState } from 'react';
 import { Button } from "../ui/button";
 import GithubButton from "@/features/auth/components/GithubButton";
+import { cn } from "@/lib/utils";
 
 export default function Navbar() {
 
