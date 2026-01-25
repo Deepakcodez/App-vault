@@ -1,10 +1,10 @@
 "use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Activity, Suspense, useRef, useState } from 'react';
-import { Button } from "../ui/button";
-import GithubButton from "@/features/auth/components/GithubButton";
+import { useRef, useState } from 'react';
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function Navbar() {
 
@@ -98,11 +98,11 @@ export default function Navbar() {
 
 
                     <div className='flex-1 flex justify-end'>
-                        <Suspense fallback={<Button>
-                            Continue with GitHub
-                        </Button>}>
-                            <GithubButton />
-                        </Suspense>
+                        <Link href={"/sign-up"}>
+                            <Button >
+                                Create Developer Account
+                            </Button>
+                        </Link>
                     </div>
                 </div>
 
