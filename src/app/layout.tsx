@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/features/providers/LenisProvider";
 import ReactQueryProvider from "@/features/providers/ReactQuery";
-import Script from "next/script";
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +33,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <LenisProvider>
-          <ReactQueryProvider>
-            {children}
-          </ReactQueryProvider>
+          <NuqsAdapter>
+            <ReactQueryProvider>
+              {children}
+            </ReactQueryProvider>
+          </NuqsAdapter>
         </LenisProvider>
 
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />

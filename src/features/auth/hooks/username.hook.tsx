@@ -8,7 +8,7 @@ export const useUserName = () => {
 
 
     const generateUserName = (name: string, id: string) => {
-        const userName = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') + '-' + id
+        const userName = (name.toLowerCase()+id).replace(" ", "")
         setUserName((prev) => {
             return userName
         })

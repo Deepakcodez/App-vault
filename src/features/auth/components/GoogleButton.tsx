@@ -5,6 +5,7 @@ import { authClient } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useUserName } from '../hooks/username.hook'
+import { useQueryState, parseAsBoolean } from 'nuqs'
 
 
 type Props = {}
@@ -12,7 +13,9 @@ type Props = {}
 export default function GoogleButton({ }: Props) {
     const [isLoading, setIsLoading] = useState(false)
     const { userName, generateUserName } = useUserName()
-    const router = useRouter()
+    const [username, setUsername] = useQueryState('username')
+    const [showUserNamePanel, setShowUserNamePanel] = useQueryState('showUserNamePanel', parseAsBoolean.withDefault(false))
+
     //   const { data } = useSuspenseQuery(AuthQueryOptions)
 
 
@@ -43,7 +46,9 @@ export default function GoogleButton({ }: Props) {
 
 
                     if (!hasUsername) {
-                        generateUserName(session.data.user.name, session.data.user.id.toString());
+                        const name = generateUserName(session.data.user.name, session.data.user.id.toString());
+                        setShowUserNamePanel(true)
+                        setUsername(name)
                     }
                     setIsLoading(false)
 
