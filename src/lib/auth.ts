@@ -1,4 +1,4 @@
-import { betterAuth } from "better-auth";
+import { array, betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { username, admin as adminPlugin, captcha, lastLoginMethod } from "better-auth/plugins"
 import prisma from "./prisma";
@@ -14,7 +14,7 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
     },
-    plugins: [  
+    plugins: [
         username(),
         adminPlugin({
             ac,
@@ -26,11 +26,20 @@ export const auth = betterAuth({
         lastLoginMethod({
             storeInDatabase: true,
         }),
-        // captcha({
-        //     provider: "cloudflare-turnstile",
-        //     secretKey: process.env.TURNSTILE_SECRET_KEY!,
-        // }),
+        captcha({
+            provider: "cloudflare-turnstile",
+            secretKey: process.env.TURNSTILE_SECRET_KEY!,
+        }),
     ],
+    user: {
+        additionalFields: {
+            apps: {
+                type: [],
+                required: false,
+                input: false,
+            },
+        }
+    },
     socialProviders: {
         github: {
             clientId: process.env.GITHUB_CLIENT_ID as string,

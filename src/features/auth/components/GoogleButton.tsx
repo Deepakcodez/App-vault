@@ -2,14 +2,17 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { authClient } from '@/lib/auth-client'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useUserName } from '../hooks/username.hook'
 
 
 type Props = {}
 
 export default function GoogleButton({ }: Props) {
     const [isLoading, setIsLoading] = useState(false)
-
+    const { userName, generateUserName } = useUserName()
+    const router = useRouter()
     //   const { data } = useSuspenseQuery(AuthQueryOptions)
 
 
@@ -22,8 +25,26 @@ export default function GoogleButton({ }: Props) {
                     setIsLoading(true)
                 },
                 onSuccess: async () => {
-                    const user = await authClient.getSession()
-                    console.log("user", user)
+                    const session = await authClient.getSession()
+
+                    // Check if there's an error
+                    if (session.error) {
+                        console.error("Session error:", session.error)
+                        setIsLoading(false)
+                        return
+                    }
+
+                    if (!session.data || !session.data.user) {
+                        setIsLoading(false)
+                        return
+                    }
+
+                    const hasUsername = !!session.data.user.username;
+
+
+                    if (!hasUsername) {
+                        generateUserName(session.data.user.name, session.data.user.id.toString());
+                    }
                     setIsLoading(false)
 
                 },
