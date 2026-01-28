@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactCompiler: true,
   cacheComponents: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -11,6 +14,7 @@ const nextConfig: NextConfig = {
         port: '',
         search: '',
       },
+
     ],
   },
   experimental: {

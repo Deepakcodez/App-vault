@@ -1,21 +1,16 @@
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
-  Field,
   FieldDescription,
-  FieldGroup,
-  FieldLabel,
 } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import GithubButton from "@/features/auth/components/GithubButton"
 import GoogleButton from "@/features/auth/components/GoogleButton"
+import { Suspense } from "react"
 
 export function SignupForm({
   className,
@@ -29,9 +24,12 @@ export function SignupForm({
 
         </CardHeader>
         <CardContent className="space-y-4">
-
-          <GithubButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
-          <GoogleButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
+          <Suspense>
+            <GithubButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
+          </Suspense>
+          <Suspense>
+            <GoogleButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
+          </Suspense>
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">

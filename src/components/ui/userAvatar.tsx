@@ -9,10 +9,10 @@ export function UserAvatar({ src, fallbackName }: props) {
         <Avatar>
             <AvatarImage
                 src={src}
-                alt="@shadcn"
-                className="grayscale"
+                alt="avatar"
+                className=""
             />
-            <AvatarFallback>{fallbackName}</AvatarFallback>
+            <AvatarFallback>{fallbackName?.split(" ")[0].slice(0, 2)}</AvatarFallback>
         </Avatar>
     )
 }

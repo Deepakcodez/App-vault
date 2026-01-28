@@ -1,20 +1,34 @@
 "use client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { useRef, useState } from 'react';
+import React from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import Image from "next/image";
+import { Avatar } from "../ui/avatar";
+import { UserAvatar } from "../ui/userAvatar";
 
 export default function Navbar() {
 
-    const navbarRef = useRef<HTMLDivElement | null>(null);
-    const menuRef = useRef<HTMLDivElement | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
+    const navbarRef = React.useRef<HTMLDivElement | null>(null);
+    const menuRef = React.useRef<HTMLDivElement | null>(null);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [user, setUser] = React.useState<any>(null);
 
+    React.useEffect(() => {
+        const loadSession = async () => {
+            const session = await authClient.getSession();
+            if (session?.data?.user) {
+                setUser(session.data.user);
+            }
+        };
+        loadSession();
+    }, []);
 
-    const tl = useRef<gsap.core.Timeline | null>(null);
-    const iconTl = useRef<gsap.core.Timeline | null>(null);
+    const tl = React.useRef<gsap.core.Timeline | null>(null);
+    const iconTl = React.useRef<gsap.core.Timeline | null>(null);
 
     // Create GSAP timeline ONCE
     useGSAP(() => {
@@ -72,6 +86,7 @@ export default function Navbar() {
 
 
 
+
     return (
         <div className='fixed top-0 w-full pt-6 flex justify-center '>
 
@@ -93,16 +108,22 @@ export default function Navbar() {
                         </button>
                     </div>
                     <div className='flex-1 flex justify-center '>
-                        <h2 className='text-white text-xl font-black'>APPVAULT</h2>
+                        <h2 className='text-white text-xl font-black'>DevDesk</h2>
                     </div>
 
-
-                    <div className='flex-1 flex justify-end'>
-                        <Link href={"/sign-up"}>
-                            <Button >
-                                Create Developer Account
-                            </Button>
-                        </Link>
+                    {/* Auth section */}
+                    <div className="flex-1 flex justify-end">
+                        {user ? (
+                            <Link href={`/profile/${user.id}`}>
+                                <UserAvatar src={user.image} fallbackName={user.name} />
+                            </Link>
+                        ) : (
+                            <Link href="/sign-up">
+                                <Button className="text-black">
+                                    Create Developer Account
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -110,23 +131,6 @@ export default function Navbar() {
 
 
 
-                {/* <div ref={menuRef} className=" p-3 menu-content ">
-                    <div className="w-5/12 h-full bg-white/10 rounded-2xl p-4">
-                        <h2 className="text-white text-xs uppercase ">Our Products</h2>
-
-                        <div className="flex flex-col gap-5 mt-12">
-                            <div className=" h-12 flex items-center border-b border-b-white/10">
-                                <p className="text-white text-2xl font-semibold uppercase ">AppVault</p>
-                            </div>
-                            <div className=" h-12 flex items-center border-b border-b-white/10">
-                                <p className="text-white text-2xl font-semibold uppercase ">App Avatar</p>
-                            </div>
-                            <div className=" h-12 flex items-center ">
-                                <p className="text-white text-2xl font-semibold uppercase ">App Slides</p>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
 
 
 
