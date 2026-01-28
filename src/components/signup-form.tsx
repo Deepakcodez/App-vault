@@ -22,18 +22,16 @@ export function SignupForm({
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    <div className={cn(" flex flex-col gap-6", className)} {...props}>
-      <Card>
+    <div className={cn(" flex flex-col items-center gap-6 ", className)} {...props}>
+      <Card className="bg-neutral-800 border border-neutral-700 w-full ">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Create your account</CardTitle>
-          <CardDescription>
-            Enter your email below to create your account
-          </CardDescription>
+          <CardTitle className="text-xl text-white">Continue with</CardTitle>
+
         </CardHeader>
         <CardContent className="space-y-4">
-   
-          <GithubButton />
-          <GoogleButton />
+
+          <GithubButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
+          <GoogleButton className="w-full py-6 md:text-lg" iconsClassName="md:size-6 size-4" />
         </CardContent>
       </Card>
       <FieldDescription className="px-6 text-center">

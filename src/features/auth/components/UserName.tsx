@@ -34,7 +34,7 @@ export default function UserName() {
     if (!showUserNamePanel) return;
     if (showUserNamePanel) return (
         <div className='fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50'>
-            <Card className='w-5/12 py-24'>
+            <Card className=''>
                 <CardHeader>
                     <CardTitle>Enter your username</CardTitle>
                 </CardHeader>
