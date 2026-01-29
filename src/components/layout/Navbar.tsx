@@ -114,7 +114,7 @@ export default function Navbar() {
                     {/* Auth section */}
                     <div className="flex-1 flex justify-end">
                         {user ? (
-                            <Link href={`/profile/${user.id}`}>
+                            <Link href={`/profile/@${user.username}`}>
                                 <UserAvatar src={user.image} fallbackName={user.name} />
                             </Link>
                         ) : (

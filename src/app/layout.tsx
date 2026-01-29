@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/features/providers/LenisProvider";
-import ReactQueryProvider from "@/features/providers/ReactQuery";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { jetbrainsMono } from "./fonts";
 import { Toaster } from "@/components/ui/sonner";
+import { TrpcReactQueryProvider } from "@/features/providers/TrpcReactQueryProvider";
 
 
 export const metadata: Metadata = {
@@ -26,10 +26,10 @@ export default function RootLayout({
       >
         <LenisProvider>
           <NuqsAdapter>
-            <ReactQueryProvider>
+            <TrpcReactQueryProvider>
               {children}
               <Toaster />
-            </ReactQueryProvider>
+            </TrpcReactQueryProvider>
           </NuqsAdapter>
         </LenisProvider>
 
