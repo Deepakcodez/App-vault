@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { authClient } from '@/lib/auth-client'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useUserName } from '../hooks/username.hook'
 import { useQueryState, parseAsBoolean } from 'nuqs'
@@ -50,7 +49,7 @@ export default function GoogleButton({ className, iconsClassName }: Props) {
 
 
                     if (!hasUsername) {
-                        const name = generateUserName(session.data.user.name, session.data.user.id.toString());
+                        const name = generateUserName(session.data.user.name);
                         setShowUserNamePanel(true)
                         setUsername(name)
                     }

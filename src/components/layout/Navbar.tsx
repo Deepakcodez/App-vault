@@ -107,9 +107,9 @@ export default function Navbar() {
                             <p className='text-white text-xl hidden md:block'>Menu</p>
                         </button>
                     </div>
-                    <div className='flex-1 flex justify-center '>
-                        <h2 className='text-white text-xl font-black'>DevDesk</h2>
-                    </div>
+                    <Link href="/" className='flex-1 flex justify-center '>
+                        <h2 className='text-white text-xl font-black'>DevDeck</h2>
+                    </Link>
 
                     {/* Auth section */}
                     <div className="flex-1 flex justify-end">

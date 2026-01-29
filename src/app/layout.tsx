@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisProvider from "@/features/providers/LenisProvider";
 import ReactQueryProvider from "@/features/providers/ReactQuery";
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { jetbrainsMono } from "./fonts";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
-  title: "AppVault",
+  title: "DevDeck | Your App Portfolio",
   description: "Get your app Portfolio",
 };
 
@@ -30,12 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${jetbrainsMono.className} antialiased`}
       >
         <LenisProvider>
           <NuqsAdapter>
             <ReactQueryProvider>
               {children}
+              <Toaster />
             </ReactQueryProvider>
           </NuqsAdapter>
         </LenisProvider>

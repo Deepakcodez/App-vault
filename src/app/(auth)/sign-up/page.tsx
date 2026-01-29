@@ -1,11 +1,13 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { SignupForm } from "@/components/signup-form"
 import Link from "next/link"
+import { Suspense } from "react"
+import UserNamePanel from "@/features/auth/components/UserNamePanel"
 
 
 export default function SignupPage() {
   return (
-    <div className=" bg-neutral-900 grid min-h-svh lg:grid-cols-2">
+    <div className="relative bg-neutral-900 grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/" className="flex items-center gap-2 font-medium text-white">
@@ -28,6 +30,10 @@ export default function SignupPage() {
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
+
+      <Suspense>
+        <UserNamePanel />
+      </Suspense>
     </div>
   )
 }

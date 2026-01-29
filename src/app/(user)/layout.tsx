@@ -7,8 +7,9 @@ type Props = {
 
 export default function UserRootLayout({ children }: Props) {
     return (
-        <div>
+        <div className='bg-neutral-900 text-white'>
             <Navbar />
-            {children}</div>
+            {children}
+        </div>
     )
 }
